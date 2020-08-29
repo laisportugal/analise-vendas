@@ -3,6 +3,7 @@ package com.ilegra.analisevendas.entidades;
 import com.ilegra.analisevendas.dto.RelatorioDTO;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Venda {
     private Integer id;
 
     @Column(name="valorTotal")
-    private Double valorTotal;
+    private BigDecimal valorTotal;
 
     @OneToMany (mappedBy = "venda")
     private List<Produto> produtos;
@@ -21,7 +22,7 @@ public class Venda {
     @OneToOne
     private Vendedor vendedor;
 
-    public Venda(Integer id, Double valorTotal, List<Produto> produtos, Vendedor vendedor) {
+    public Venda(Integer id, BigDecimal valorTotal, List<Produto> produtos, Vendedor vendedor) {
         this.id = id;
         this.valorTotal = valorTotal;
         this.produtos = produtos;
@@ -55,22 +56,21 @@ public class Venda {
         this.vendedor = vendedor;
     }
 
-    public Double getValorTotal() {
+    public BigDecimal getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(Double valorTotal) {
+    public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
     }
 
-    public void cacularVendaMaisCara(){
+    public void preencherRelatorioVenda(){
         List<Venda> vendas = Arrays.asList(new Venda());
-//        BigDecimal valorTotal = vendas
-//                .stream()
-//                .map(Venda::getValorTotal)
-//                .reduce(BigDecimal.ZERO,
-//                        BigDecimal::add);
-
+        BigDecimal valorTotal = vendas
+                .stream()
+                .map(Venda::getValorTotal)
+                .reduce(BigDecimal.ZERO,
+                        BigDecimal::add);
        RelatorioDTO relatorioDTO = new RelatorioDTO();
        relatorioDTO.setVendaMaisCara(vendas.stream().min(Comparator.comparing(Venda::getValorTotal)).orElse(null));
        relatorioDTO.setPiorVenda(vendas.stream().max(Comparator.comparing(Venda::getValorTotal)).orElse(null));

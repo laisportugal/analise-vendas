@@ -76,8 +76,6 @@ public class LeitorArquivo {
         }
         calcularTotalVendas(produtos);
 
-        preencheRelatorioVendaMaisCara(venda);
-        preencheRelatorioPiorVendedor(venda);
     }
 
     private BigDecimal calcularTotalVendas(List<Produto> produtos) {
@@ -86,23 +84,8 @@ public class LeitorArquivo {
                         .multiply(BigDecimal.valueOf(p.getQuantidade().longValue())))
                 .reduce(BigDecimal.ZERO,BigDecimal::add);
         return totalVendas;
-
-
      }
 
-    private void preencheRelatorioVendaMaisCara(Venda venda) {
-
-    }
-
-    private void preencheRelatorioPiorVendedor(Venda venda) {
-        if (relatorioDTO.getPiorVenda() == null) {
-            relatorioDTO.setPiorVenda(venda);
-        } else {
-            if (venda.getValorTotal() < relatorioDTO.getPiorVenda().getValorTotal()) {
-                relatorioDTO.setPiorVenda(venda);
-            }
-        }
-    }
 
     public RelatorioDTO getRelatorio() {
         return relatorioDTO;

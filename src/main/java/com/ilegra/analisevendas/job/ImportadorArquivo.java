@@ -24,7 +24,7 @@ public class ImportadorArquivo {
 
         String diretorioSaida = "D:\\arquivos\\out\\" + dataFormatada + "-"
                 + leitorArquivo.getNomeArquivoEntrada();
-        escritorArquivo.escreverArquivo(leitorArquivo.getRelatorio(), diretorioSaida);
+        escritorArquivo.escreverArquivo(leitorArquivo.getRelatorio(), diretorioLeitura);
     }
 
 }
