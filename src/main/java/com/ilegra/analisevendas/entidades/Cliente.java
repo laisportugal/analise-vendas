@@ -19,6 +19,16 @@ public class Cliente {
     @Column(name="areaNegocio")
     private String areaNegocio;
 
+    public Cliente() {
+    }
+
+    public Cliente(Integer id, String cnpj, String nome, String areaNegocio) {
+        this.id = id;
+        this.cnpj = cnpj;
+        this.nome = nome;
+        this.areaNegocio = areaNegocio;
+    }
+
     public Integer getId() {
         return id;
     }

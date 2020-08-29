@@ -9,14 +9,24 @@ public class Vendedor {
     @Id
     private Integer id;
 
-    @Column(name="nome")
-    private String nome;
-
     @Column(name="cpf")
     private String cpf;
 
+    @Column(name="nome")
+    private String nome;
+
     @Column(name="salario")
     private Double salario;
+
+    public Vendedor() {
+    }
+
+    public Vendedor(Integer id, String nome, String cpf, Double salario) {
+        this.id = id;
+        this.cpf = cpf;
+        this.nome = nome;
+        this.salario = salario;
+    }
 
     public Integer getId() {
         return id;

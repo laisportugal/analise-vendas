@@ -9,6 +9,8 @@ import com.ilegra.analisevendas.entidades.Vendedor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LeitorArquivo {
@@ -32,11 +34,9 @@ public class LeitorArquivo {
                 String[] textoSeparado = linha.split("ç");
 
                 if (idVendedor.equals(textoSeparado[0])) {
-                    preencheVendedor(textoSeparado);
-                    relatorioDTO.setQuantidadeVendedores(relatorioDTO.getQuantidadeVendedores() + 1);
+                    relatorioDTO.setQuantidadeVendedores(preencheVendedor(textoSeparado));
                 } else if (idCliente.equals(textoSeparado[0])) {
-                    preencheCliente(textoSeparado);
-                    relatorioDTO.setQuantidadeClientes(relatorioDTO.getQuantidadeClientes() + 1);
+                    relatorioDTO.setQuantidadeClientes(preencheCliente(textoSeparado));
                 } else if (idVenda.equals(textoSeparado[0])) {
                     preencheVenda(textoSeparado);
                 }
@@ -45,23 +45,16 @@ public class LeitorArquivo {
             in.close();
         }
     }
-    private void preencheVendedor(String[] linha) {
-
-        Vendedor vendedor = new Vendedor();
-        vendedor.setId(Integer.valueOf(linha[0]));
-        vendedor.setCpf(linha[1]);
-        vendedor.setNome(linha[2]);
-        vendedor.setSalario(Double.valueOf(linha[3]));
+    private Integer preencheVendedor(String[] linha) {
+        List<Vendedor> vendedores = new ArrayList<Vendedor>();
+        vendedores.add(new Vendedor(Integer.valueOf(linha[0]), linha[1],linha[2], Double.valueOf(linha[3])));
+        return vendedores.size();
     }
 
-    private void preencheCliente(String[] linha) {
-
-        Cliente cliente = new Cliente();
-        cliente.setId(Integer.valueOf(linha[0]));
-        cliente.setCnpj(linha[1]);
-        cliente.setNome(linha[2]);
-        cliente.setAreaNegocio(linha[3]);
-
+    private Integer preencheCliente(String[] linha) {
+        List<Cliente> clientes = new ArrayList<Cliente>();
+        clientes.add(new Cliente (Integer.valueOf(linha[0]),linha[1],linha[2],linha[3]));
+        return clientes.size();
     }
 
     private void preencheVenda(String[] linha) {

@@ -32,7 +32,12 @@ public class Produto {
     }
 
     public void setPreco(Double preco) {
-        this.preco = preco;
+        if (preco != null){
+            this.preco = preco;
+        }
+        else{
+            this.preco=0d;
+        }
     }
 
     public String getNome() {
@@ -48,6 +53,11 @@ public class Produto {
     }
 
     public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
+        if (quantidade != null){
+            this.quantidade = quantidade;
+        }
+        else{
+            this.quantidade=0;
+        }
     }
 }

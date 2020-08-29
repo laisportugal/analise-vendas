@@ -14,7 +14,11 @@ public class RelatorioDTO {
     }
 
     public void setQuantidadeClientes(Integer quantidadeClientes) {
-        this.quantidadeClientes = quantidadeClientes;
+        if (quantidadeClientes != null){
+            this.quantidadeClientes = quantidadeClientes;
+        }else{
+            this.quantidadeClientes =0;
+        }
     }
 
     public Integer getQuantidadeVendedores() {
@@ -22,7 +26,13 @@ public class RelatorioDTO {
     }
 
     public void setQuantidadeVendedores(Integer quantidadeVendedores) {
-        this.quantidadeVendedores = quantidadeVendedores;
+        if(quantidadeVendedores != null){
+            this.quantidadeVendedores = quantidadeVendedores;
+        }
+        else {
+            this.quantidadeVendedores=0;
+        }
+
     }
 
     public Venda getVendaMaisCara() {
