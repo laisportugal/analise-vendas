@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collector;
 
 public class LeitorArquivo {
 
@@ -63,7 +62,6 @@ public class LeitorArquivo {
         Venda venda = new Venda();
         Vendedor vendedor = new Vendedor();
         vendedor.setNome(linha[3]);
-
         venda.setId(Integer.valueOf(linha[1]));
         venda.setVendedor(vendedor);
 
