@@ -103,7 +103,6 @@ public class LeitorArquivo {
         }
     }
 
-
     public RelatorioDTO getRelatorio() {
         return relatorioDTO;
     }
