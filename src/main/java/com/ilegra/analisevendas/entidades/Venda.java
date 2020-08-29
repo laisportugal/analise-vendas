@@ -1,7 +1,10 @@
 package com.ilegra.analisevendas.entidades;
 
+import com.ilegra.analisevendas.dto.RelatorioDTO;
+
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity (name="venda")
@@ -17,6 +20,16 @@ public class Venda {
 
     @OneToOne
     private Vendedor vendedor;
+
+    public Venda(Integer id, Double valorTotal, List<Produto> produtos, Vendedor vendedor) {
+        this.id = id;
+        this.valorTotal = valorTotal;
+        this.produtos = produtos;
+        this.vendedor = vendedor;
+    }
+
+    public Venda() {
+    }
 
     public Integer getId() {
         return id;
@@ -48,6 +61,19 @@ public class Venda {
 
     public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public void cacularVendaMaisCara(){
+        List<Venda> vendas = Arrays.asList(new Venda());
+//        BigDecimal valorTotal = vendas
+//                .stream()
+//                .map(Venda::getValorTotal)
+//                .reduce(BigDecimal.ZERO,
+//                        BigDecimal::add);
+
+       RelatorioDTO relatorioDTO = new RelatorioDTO();
+       relatorioDTO.setVendaMaisCara(vendas.stream().min(Comparator.comparing(Venda::getValorTotal)).orElse(null));
+       relatorioDTO.setPiorVenda(vendas.stream().max(Comparator.comparing(Venda::getValorTotal)).orElse(null));
     }
 
 }

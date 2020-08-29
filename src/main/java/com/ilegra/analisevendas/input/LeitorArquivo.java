@@ -71,26 +71,27 @@ public class LeitorArquivo {
 
         for (String itemVenda : conteudoItemVenda) {
             String[] descricoesVenda = itemVenda.split("-");
-            produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), BigDecimal.valueOf(Long.parseLong(descricoesVenda[2]))));
+            produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), new BigDecimal(descricoesVenda[2])));
             venda.setProdutos(produtos);
         }
-        produtos.stream()
-                .map(p -> p.getPreco()
-                        .multiply(BigDecimal.valueOf(p.getQuantidade().longValue())));
+        calcularTotalVendas(produtos);
 
         preencheRelatorioVendaMaisCara(venda);
         preencheRelatorioPiorVendedor(venda);
     }
 
-    private void preencheRelatorioVendaMaisCara(Venda venda) {
-        if (relatorioDTO.getVendaMaisCara() == null) {
-            relatorioDTO.setVendaMaisCara(venda);
-        } else {
+    private BigDecimal calcularTotalVendas(List<Produto> produtos) {
+        BigDecimal totalVendas = produtos.stream()
+                .map(p -> p.getPreco()
+                        .multiply(BigDecimal.valueOf(p.getQuantidade().longValue())))
+                .reduce(BigDecimal.ZERO,BigDecimal::add);
+        return totalVendas;
 
-            if (venda.getValorTotal() > relatorioDTO.getVendaMaisCara().getValorTotal()) {
-                relatorioDTO.setVendaMaisCara(venda);
-            }
-        }
+
+     }
+
+    private void preencheRelatorioVendaMaisCara(Venda venda) {
+
     }
 
     private void preencheRelatorioPiorVendedor(Venda venda) {
