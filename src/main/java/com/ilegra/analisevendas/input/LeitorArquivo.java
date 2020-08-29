@@ -9,9 +9,11 @@ import com.ilegra.analisevendas.entidades.Vendedor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collector;
 
 public class LeitorArquivo {
 
@@ -67,18 +69,17 @@ public class LeitorArquivo {
 
         String conteudoVenda = linha[2].replace("[", "").replace("]", "");
         String[] conteudoItemVenda = conteudoVenda.split(",");
+        List<Produto> produtos = new ArrayList<Produto>();
+
         for (String itemVenda : conteudoItemVenda) {
             String[] descricoesVenda = itemVenda.split("-");
-            Produto produto = new Produto();
-            produto.setId(Integer.valueOf(descricoesVenda[0]));
-            produto.setQuantidade(Integer.valueOf(descricoesVenda[1]));
-            produto.setPreco(Double.valueOf(descricoesVenda[2]));
-            venda.getProdutos().add(produto);
-
-            Double valorTotalProduto = produto.getPreco() * produto.getQuantidade();
-            venda.setValorTotal(venda.getValorTotal() + valorTotalProduto);
-
+            produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), BigDecimal.valueOf(Long.parseLong(descricoesVenda[2]))));
+            venda.setProdutos(produtos);
         }
+        produtos.stream()
+                .map(p -> p.getPreco()
+                        .multiply(BigDecimal.valueOf(p.getQuantidade().longValue())));
+
         preencheRelatorioVendaMaisCara(venda);
         preencheRelatorioPiorVendedor(venda);
     }
@@ -103,6 +104,8 @@ public class LeitorArquivo {
             }
         }
     }
+
+
     public RelatorioDTO getRelatorio() {
         return relatorioDTO;
     }

@@ -3,6 +3,7 @@ package com.ilegra.analisevendas.entidades;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Entity (name="produto")
 public class Produto {
@@ -10,14 +11,20 @@ public class Produto {
     @Id
     private Integer id;
 
-    @Column(name="preco")
-    private Double preco;
-
-    @Column(name="nome")
-    private String nome;
-
     @Column(name="quantidade")
     private Integer quantidade;
+
+    @Column(name="preco")
+    private BigDecimal preco;
+
+    public Produto() {
+    }
+
+    public Produto(Integer id, Integer quantidade, BigDecimal preco) {
+        this.id = id;
+             this.quantidade = quantidade;
+        this.preco = preco;
+    }
 
     public Integer getId() {
         return id;
@@ -27,25 +34,17 @@ public class Produto {
         this.id = id;
     }
 
-    public Double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco) {
+    public void setPreco(BigDecimal preco) {
         if (preco != null){
             this.preco = preco;
         }
         else{
-            this.preco=0d;
+            this.preco=BigDecimal.ZERO;
         }
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public Integer getQuantidade() {
@@ -60,4 +59,6 @@ public class Produto {
             this.quantidade=0;
         }
     }
+
+
 }

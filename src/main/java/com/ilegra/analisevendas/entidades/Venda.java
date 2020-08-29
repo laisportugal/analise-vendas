@@ -1,6 +1,7 @@
 package com.ilegra.analisevendas.entidades;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity (name="venda")
@@ -29,8 +30,8 @@ public class Venda {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produto) {
-        this.produtos = produto;
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
     }
 
     public Vendedor getVendedor() {
@@ -48,4 +49,5 @@ public class Venda {
     public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
     }
+
 }
