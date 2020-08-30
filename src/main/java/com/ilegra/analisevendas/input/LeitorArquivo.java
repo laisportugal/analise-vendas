@@ -24,6 +24,7 @@ public class LeitorArquivo {
 
         File diretorio = new File(caminhoDiretorio);
         File[] listFiles = diretorio.listFiles();
+        List<Venda> vendas = new ArrayList<>();
 
         for (File arquivo : listFiles) {
             Scanner in = new Scanner(new FileReader(arquivo));
@@ -37,12 +38,14 @@ public class LeitorArquivo {
                 } else if (idCliente.equals(textoSeparado[0])) {
                     relatorioDTO.setQuantidadeClientes(preencheCliente(textoSeparado));
                 } else if (idVenda.equals(textoSeparado[0])) {
-                    preencheVenda(textoSeparado);
+                    vendas.add(preencheVenda(textoSeparado));
+
                 }
 
             }
             in.close();
         }
+        preencherRelatorioVenda(vendas);
     }
     private Integer preencheVendedor(String[] linha) {
         List<Vendedor> vendedores = new ArrayList<Vendedor>();
@@ -56,7 +59,7 @@ public class LeitorArquivo {
         return clientes.size();
     }
 
-    private void preencheVenda(String[] linha) {
+    private Venda preencheVenda(String[] linha) {
         Venda venda = new Venda();
         Vendedor vendedor = new Vendedor();
         vendedor.setNome(linha[3]);
@@ -66,16 +69,14 @@ public class LeitorArquivo {
         String conteudoVenda = linha[2].replace("[", "").replace("]", "");
         String[] conteudoItemVenda = conteudoVenda.split(",");
         List<Produto> produtos = new ArrayList<Produto>();
-        List<Venda> vendas = new ArrayList<Venda>();
 
         for (String itemVenda : conteudoItemVenda) {
             String[] descricoesVenda = itemVenda.split("-");
             produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), new BigDecimal(descricoesVenda[2])));
-  //          venda.setProdutos(produtos);
         }
         venda.setProdutos(produtos);
         venda.setValorTotal(calcularTotalVendas(produtos));
-        preencherRelatorioVenda(vendas);
+        return venda;
     }
 
     private BigDecimal calcularTotalVendas(List<Produto> produtos) {
@@ -86,11 +87,6 @@ public class LeitorArquivo {
         return totalVendas;
      }
     public void preencherRelatorioVenda(List<Venda> vendas){
-        BigDecimal valorTotal = vendas
-                .stream()
-                .map(Venda::getValorTotal)
-                .reduce(BigDecimal.ZERO,
-                        BigDecimal::add);
         relatorioDTO.setVendaMaisCara(vendas
                 .stream()
                 .max(Comparator.comparing(Venda::getValorTotal))
