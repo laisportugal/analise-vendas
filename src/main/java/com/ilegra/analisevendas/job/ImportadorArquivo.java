@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class ImportadorArquivo {
     public static void importarArquivos() throws IOException {
-        String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yy 00:00:00"));
+        String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yy"));
         LeitorArquivo leitorArquivo = new LeitorArquivo();
         EscritorArquivo escritorArquivo = new EscritorArquivo();
 

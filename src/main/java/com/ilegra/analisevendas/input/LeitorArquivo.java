@@ -10,9 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class LeitorArquivo {
 
@@ -68,14 +66,16 @@ public class LeitorArquivo {
         String conteudoVenda = linha[2].replace("[", "").replace("]", "");
         String[] conteudoItemVenda = conteudoVenda.split(",");
         List<Produto> produtos = new ArrayList<Produto>();
+        List<Venda> vendas = new ArrayList<Venda>();
 
         for (String itemVenda : conteudoItemVenda) {
             String[] descricoesVenda = itemVenda.split("-");
             produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), new BigDecimal(descricoesVenda[2])));
             venda.setProdutos(produtos);
         }
-        calcularTotalVendas(produtos);
-
+        preencherRelatorioVenda(vendas);
+        venda.setProdutos(produtos);
+        venda.setValorTotal(calcularTotalVendas(produtos));
     }
 
     private BigDecimal calcularTotalVendas(List<Produto> produtos) {
@@ -85,7 +85,15 @@ public class LeitorArquivo {
                 .reduce(BigDecimal.ZERO,BigDecimal::add);
         return totalVendas;
      }
-
+    public void preencherRelatorioVenda(List<Venda> vendas){
+        BigDecimal valorTotal = vendas
+                .stream()
+                .map(Venda::getValorTotal)
+                .reduce(BigDecimal.ZERO,
+                        BigDecimal::add);
+        relatorioDTO.setVendaMaisCara(vendas.stream().min(Comparator.comparing(Venda::getValorTotal)).orElse(null));
+        relatorioDTO.setPiorVenda(vendas.stream().max(Comparator.comparing(Venda::getValorTotal)).orElse(null));
+    }
 
     public RelatorioDTO getRelatorio() {
         return relatorioDTO;
