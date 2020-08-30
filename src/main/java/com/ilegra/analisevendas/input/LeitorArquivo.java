@@ -73,9 +73,9 @@ public class LeitorArquivo {
             produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), new BigDecimal(descricoesVenda[2])));
             venda.setProdutos(produtos);
         }
-        preencherRelatorioVenda(vendas);
         venda.setProdutos(produtos);
         venda.setValorTotal(calcularTotalVendas(produtos));
+        preencherRelatorioVenda(vendas);
     }
 
     private BigDecimal calcularTotalVendas(List<Produto> produtos) {
@@ -91,8 +91,11 @@ public class LeitorArquivo {
                 .map(Venda::getValorTotal)
                 .reduce(BigDecimal.ZERO,
                         BigDecimal::add);
-        relatorioDTO.setVendaMaisCara(vendas.stream().min(Comparator.comparing(Venda::getValorTotal)).orElse(null));
-        relatorioDTO.setPiorVenda(vendas.stream().max(Comparator.comparing(Venda::getValorTotal)).orElse(null));
+        relatorioDTO.setVendaMaisCara(vendas
+                .stream()
+                .max(Comparator.comparing(Venda::getValorTotal))
+                .orElse(null));
+        relatorioDTO.setPiorVenda(vendas.stream().min(Comparator.comparing(Venda::getValorTotal)).orElse(null));
     }
 
     public RelatorioDTO getRelatorio() {
