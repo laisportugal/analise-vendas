@@ -24,7 +24,10 @@ public class LeitorArquivo {
 
         File diretorio = new File(caminhoDiretorio);
         File[] listFiles = diretorio.listFiles();
-        List<Venda> vendas = new ArrayList<>();
+        List<Venda> vendas = new ArrayList<Venda>();
+        List<Vendedor> vendedores = new ArrayList<Vendedor>();
+        List<Cliente> clientes = new ArrayList<Cliente>();
+
 
         for (File arquivo : listFiles) {
             Scanner in = new Scanner(new FileReader(arquivo));
@@ -34,9 +37,9 @@ public class LeitorArquivo {
                 String[] textoSeparado = linha.split("ç");
 
                 if (idVendedor.equals(textoSeparado[0])) {
-                    relatorioDTO.setQuantidadeVendedores(preencheVendedor(textoSeparado));
+                    vendedores.add(preencheVendedor(textoSeparado));
                 } else if (idCliente.equals(textoSeparado[0])) {
-                    relatorioDTO.setQuantidadeClientes(preencheCliente(textoSeparado));
+                    clientes.add(preencheCliente(textoSeparado));
                 } else if (idVenda.equals(textoSeparado[0])) {
                     vendas.add(preencheVenda(textoSeparado));
 
@@ -46,17 +49,17 @@ public class LeitorArquivo {
             in.close();
         }
         preencherRelatorioVenda(vendas);
+        preencheRelatorioVendedor(vendedores);
+        preencheRelatorioClientes(clientes);
     }
-    private Integer preencheVendedor(String[] linha) {
-        List<Vendedor> vendedores = new ArrayList<Vendedor>();
-        vendedores.add(new Vendedor(Integer.valueOf(linha[0]), linha[1],linha[2], Double.valueOf(linha[3])));
-        return vendedores.size();
+    private Vendedor preencheVendedor(String[] linha) {
+       Vendedor vendedor = new Vendedor(Integer.valueOf(linha[0]), linha[1],linha[2], Double.valueOf(linha[3]));
+        return vendedor;
     }
 
-    private Integer preencheCliente(String[] linha) {
-        List<Cliente> clientes = new ArrayList<Cliente>();
-        clientes.add(new Cliente (Integer.valueOf(linha[0]),linha[1],linha[2],linha[3]));
-        return clientes.size();
+    private Cliente preencheCliente(String[] linha) {
+        Cliente cliente = new Cliente (Integer.valueOf(linha[0]),linha[1],linha[2],linha[3]);
+        return cliente;
     }
 
     private Venda preencheVenda(String[] linha) {
@@ -92,6 +95,12 @@ public class LeitorArquivo {
                 .max(Comparator.comparing(Venda::getValorTotal))
                 .orElse(null));
         relatorioDTO.setPiorVenda(vendas.stream().min(Comparator.comparing(Venda::getValorTotal)).orElse(null));
+    }
+    public void preencheRelatorioVendedor(List<Vendedor> vendedores){
+        relatorioDTO.setQuantidadeVendedores(vendedores.size());
+    }
+    public void preencheRelatorioClientes (List<Cliente> clientes){
+        relatorioDTO.setQuantidadeClientes(clientes.size());
     }
 
     public RelatorioDTO getRelatorio() {
