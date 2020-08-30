@@ -71,7 +71,7 @@ public class LeitorArquivo {
         for (String itemVenda : conteudoItemVenda) {
             String[] descricoesVenda = itemVenda.split("-");
             produtos.add(new Produto(Integer.valueOf(descricoesVenda[0]),Integer.valueOf(descricoesVenda[1]), new BigDecimal(descricoesVenda[2])));
-            venda.setProdutos(produtos);
+  //          venda.setProdutos(produtos);
         }
         venda.setProdutos(produtos);
         venda.setValorTotal(calcularTotalVendas(produtos));
